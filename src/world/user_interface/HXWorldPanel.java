@@ -87,9 +87,9 @@ public class HXWorldPanel extends JPanel implements MouseListener, MouseMotionLi
 		world.draw(g, interpolation);
 	}
 	
-	public void updateTick() {
+	public void updateTick(double dT) {
 		camera.updatePanning();
-		world.updateTick();
+		world.updateTick(dT);
 	}
 	
 	public void repaintWorld(float withInterpolation) {
@@ -113,20 +113,21 @@ public class HXWorldPanel extends JPanel implements MouseListener, MouseMotionLi
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		world.interactAt(
-				e.getX() + camera.getCamera_x(), 
-				e.getY() + camera.getCamera_y());
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		mouse_x_last = e.getX();
 		mouse_y_last = e.getY();
+		world.interactAt(
+				e.getX() + camera.getCamera_x(), 
+				e.getY() + camera.getCamera_y());
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		setCursor(Cursor.getDefaultCursor());
+		world.interactStop();
 	}
 
 	@Override
@@ -144,7 +145,15 @@ public class HXWorldPanel extends JPanel implements MouseListener, MouseMotionLi
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		camera.dragPan(mouse_x_last - e.getX(), e.getY() - mouse_y_last);
+		if (world.isInteracting()) {
+			world.interactMove(
+					e.getX() + camera.getCamera_x(), 
+					e.getY() + camera.getCamera_y());
+		} else {
+			camera.dragPan(
+					mouse_x_last - e.getX(), 
+					e.getY() - mouse_y_last);
+		}
 		mouse_x_last = e.getX();
 		mouse_y_last = e.getY();
 	}

@@ -19,7 +19,7 @@ public class HXMasterWindow extends JFrame {
 	
 	// The dimensions of the window
 	private static final int WINDOW_WIDTH = 800;
-	private static final int WINDOW_HEIGHT = 394;
+	private static final int WINDOW_HEIGHT = 600;
 	// The dimensions of the world inside the world panel
 	public static final int WORLD_WIDTH = 1000;
 	public static final int WORLD_HEIGHT = 500;
@@ -40,7 +40,7 @@ public class HXMasterWindow extends JFrame {
 	private void initialize() {
 		// Attributes of the parent window
 		getContentPane().setBackground(Color.WHITE);
-		setTitle("Window Title");
+		setTitle("2D Physics Environment Test");
 		setBounds(100, 100, WINDOW_WIDTH, WINDOW_HEIGHT);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setMinimumSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));

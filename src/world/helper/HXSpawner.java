@@ -20,7 +20,7 @@ public class HXSpawner {
 	 * &nbsp&nbsp new HXSpawner( HXEntityTemplate.class, <br>
 	 * &nbsp&nbsp&nbsp&nbsp new Class[] {int.class, int.class, double.class, double.class, HXWorld.class}, <br>
 	 * &nbsp&nbsp&nbsp&nbsp new object[] { 50, 50, 6.5, 0, this}, <br>
-	 * &nbsp&nbsp&nbsp&nbsp 2.5 <br>
+	 * &nbsp&nbsp&nbsp&nbsp SPAWN_RATE_SECS <br>
 	 * &nbsp&nbsp&nbsp&nbsp );
 	 * @param entityClass - A subclass of the HXEntity class
 	 * @param parameterTypes - The data types for the given classes constructor's parameters
@@ -62,7 +62,7 @@ public class HXSpawner {
 	/**
 	 * Start the HXSpawner if it was previously stopped.
 	 * <p>
-	 * This will occur automatically when a new HXSpawner is instantiated
+	 * This will occur automatically when a new HXSpawner is created.
 	 */
 	public void start() {
 		if (!timerRunning) {

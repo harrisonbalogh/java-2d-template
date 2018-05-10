@@ -62,7 +62,7 @@ public class HXClock {
 					if (!appPaused) {
 						// Attempts to do as many updates as are allowed before a render
 						while (now - lastUpdateTime > TIME_BETWEEN_UPDATES && updateCount < MAX_UPDATES_BEFORE_RENDER) {
-							updateWorld();
+							updateWorld(TIME_BETWEEN_UPDATES);
 							lastUpdateTime += TIME_BETWEEN_UPDATES;
 							updateCount++;
 						}
@@ -96,6 +96,11 @@ public class HXClock {
 			            if (HXKey.isPressed("b")) {
 			    			printBenchmarks();
 			    		}
+			            if (HXKey.isPressed("t")) {
+			            	
+			            	HXKey.setReleased("t");
+			            }
+			            
 					} else {
 						// Allows clock to start back up after a pause
 						synchronized (pauseLock) {
@@ -125,17 +130,18 @@ public class HXClock {
 		List<Long> list = timings;
 		BigInteger sum = list.stream().map(BigInteger::valueOf).reduce((x, y) -> x.add(y)).get();
 		BigDecimal average = new BigDecimal(sum).divide(BigDecimal.valueOf(list.size()), RoundingMode.HALF_UP);
+		average = average.divide(BigDecimal.valueOf(NANO_SECONDS));
 		timings = new ArrayList<Long>();
 		System.out.println("Average update timing: \t" + average + " \tns after " + numberOfSecondsRun + " seconds.");
 		HXKey.setReleased("b");
 		numberOfSecondsRun = 0;
 	}
 	
-	public void updateWorld() {
+	public void updateWorld(double dT) {
 		// Benchmarking updates
 		long startTime = System.nanoTime(); 
 		
-		parentPanel.updateTick(); //getWorld().updateEntities();
+		parentPanel.updateTick(dT); //getWorld().updateEntities();
 		
 		long estimatedTime = System.nanoTime() - startTime;
 		timings.add(estimatedTime);

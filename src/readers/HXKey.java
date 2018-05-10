@@ -7,11 +7,9 @@ public class HXKey {
 	
 	// ADD NEW KEYS TO THIS LIST = = = = = = = = = = = = = =...
 	private static String[] TRACK_THESE_KEYS = {
-			"r",
+			"i",
 			"d",
-			"f",
-			"g",
-			"b",
+			"k"
 	};
 	// ... = = = = = = = = = = = = = = = = = = = = = = = = = =
 	
