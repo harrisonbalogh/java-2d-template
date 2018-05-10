@@ -5,7 +5,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import world.entities.HXEntity;
 import world.entities.HXEntityTemplate;
-import world.helper.properties.HXInteractable;
+import world.helper.properties.*;
  
 public class HXWorld {
 	
@@ -16,6 +16,10 @@ public class HXWorld {
 	/* === Updates and drawing === */
 	private final CopyOnWriteArrayList<HXEntity> entities = new CopyOnWriteArrayList<HXEntity>();
 	private final CopyOnWriteArrayList<HXEntity> physicsBodies = new CopyOnWriteArrayList<HXEntity>();
+	
+	/* === Mouse Hovering and Interacting */
+//	private HXInteractable interactTarget = null;
+//	private HXHoverable hoverTarget = null;
 
 	/**
 	 * The HXWorld object owns all entities in a CopyOnWriteArrayList but is drawn in a HXWorldPanel.
@@ -30,7 +34,7 @@ public class HXWorld {
 		for (int x = 0; x < width/50; x++) {
 			for (int y = 0; y < height/50; y++) {
 				// This is making the visual grid in the world
-				new HXEntityTemplate(x*50, y*50, 0, 0, this);
+				entityAdd(new HXEntityTemplate(x*50, y*50, 0, 0, this));
 			} 
 		}
 		// ...
@@ -39,23 +43,48 @@ public class HXWorld {
 	/**
 	 * Calls any targeted entities' interaction methods
 	 * <p>
-	 * Goes through all entities that deploy the HXInteractable interface
+	 * Goes through all entities that implement the HXInteractable interface
 	 * and calls its interact method if its hitbox was intersected by the 
 	 * interaction coordinates.
-	 * @param x - The x coordinate of the interaction
-	 * @param y - The y coordinate of the interactoin
+	 * @param x - The x coordinate of the interaction. These will be translated
+	 * into world coordinates internally (scale and translation).
+	 * @param y - The y coordinate of the interaction. These will be translated
+	 * into world coordates internally (scale and translation).
 	 */
 	public void interactAt(int x, int y) {
 		for (HXEntity e : entities) {
 			if (e instanceof HXInteractable) {
-				if (e.getRect().contains(x, y)) {
+				if (e.getRect().contains(x/scale, y/scale)) {
 					((HXInteractable) e).interact();
 				}
 			}
 		}
 	}
 	
-	public void entityAdd(HXEntity e) {
+	/**
+	 * Calls any hovered entities' interaction methods
+	 * <p>
+	 * Goes through all entities that implement the HXHoverable interface
+	 * and calls its hovered method if its hitbox was intersected by the
+	 * intersection coordinates else it will call the not_hovered method.
+	 * @param x - The x coordinate of the interaction. These will be translated
+	 * into world coordinates internally (scale and translation).
+	 * @param y - The y coordinate of the interaction. These will be translated
+	 * into world coordates internally (scale and translation).
+	 */
+	public void hoverAt(int x, int y) {
+		for (HXEntity e : entities) {
+			if (e instanceof HXHoverable) {
+				if (e.getRect().contains(x/scale, y/scale)) {
+					((HXHoverable) e).hovered();
+				} else if (e.getHovered()){
+					((HXHoverable) e).not_hovered();
+				}
+			}
+		}
+	}
+	
+	private void entityAdd(HXEntity e) {
 		entities.add(0, e);
 	}
 	public void entityRemove(HXEntity e) {

@@ -13,13 +13,11 @@ public abstract class HXEntity {
 	private double yPos;
 	private double xPos_prev;
 	private double yPos_prev;
-	private double xAnchor = 0.5;
-	private double yAnchor = 0.5;
+//	private double xAnchor = 0.5;
+//	private double yAnchor = 0.5;
 	private double width;
 	private double height;
 	private double scale;
-	private int    draw_xPos;
-	private int    draw_yPos;
 	
 	private Rectangle rect;
 	private HXWorld parentWorld;
@@ -28,13 +26,14 @@ public abstract class HXEntity {
 	private double lifespan; // an entity with -1 lifespan will not decay
 	private double xVel;
 	private double yVel;
+	private Boolean hovered = false;
 	
 	private double LIFESPAN_DECAY = 0.03;
 	
 	// PHYSICS BODY
 	// Friction can still be applied to an entity w/o a physicsBody
 	private double FRICTION = 0.2;
-	private double rotation = 0;
+//	private double rotation = 0;
 	private double sphere_radius; // Circle around square shape.
 	
 	/**
@@ -72,8 +71,6 @@ public abstract class HXEntity {
 		this.yVel = velY;
 		
 		this.sphere_radius = Math.sqrt(Math.pow((width/2), 2) + Math.pow((height/2), 2));
-		
-		this.parentWorld.entityAdd(this);
 	}
 	
 	/**
@@ -84,11 +81,7 @@ public abstract class HXEntity {
 	 * @param interpolation - Sent by the HXClock to smooth movements when thread stutters or CPU lags.
 	 */
 	public void draw(Graphics g, float interpolation) { 
-		draw_xPos = (int) (((xPos - xPos_prev) * interpolation + xPos_prev) * scale);
-		draw_yPos = (int) (((yPos - yPos_prev) * interpolation + yPos_prev) * scale);
 
-		// draw() updates Rectangle location with where it visually is rendered
-		rect.setLocation((int) draw_xPos, (int) draw_yPos); 
 	}
 	
 	/**
@@ -107,12 +100,13 @@ public abstract class HXEntity {
 				}
 			}
 			
-		} else {
+		} else if (xVel != 0 || yVel != 0) {
 			// If entity does not have a PhysicsBody then
 			// use simple movement scheme with general
 			// deceleration from friction.
 			xPos += xVel;
 			yPos += yVel;
+			rect.setLocation((int) xPos, (int) yPos); 
 		
 			if (xVel >= FRICTION)
 				xVel -= FRICTION;
@@ -150,6 +144,9 @@ public abstract class HXEntity {
 	public double getSphereRadius() {
 		return sphere_radius;
 	}
+	public void setPos(double xPos, double yPos) {
+		setxPos(xPos); setyPos(yPos);
+	}
 	public double getxPos() {
 		return xPos;
 	}
@@ -161,18 +158,6 @@ public abstract class HXEntity {
 	}
 	public void setyPos(double yPos) {
 		this.yPos = yPos;
-	}
-	public double getxPos_Prev() {
-		return xPos_prev;
-	}
-	public void setxPos_Prev(double prevX) {
-		this.xPos_prev = prevX;
-	}
-	public double getyPos_Prev() {
-		return yPos_prev;
-	}
-	public void setyPos_Prev(double prevY) {
-		this.yPos_prev = prevY;
 	}
 	public double getHeight() {
 		return height;
@@ -188,9 +173,6 @@ public abstract class HXEntity {
 	}
 	public Rectangle getRect() {
 		return rect;
-	}
-	public void setRect(Rectangle rect) {
-		this.rect = rect;
 	}
 	public Double getMass() {
 		return mass;
@@ -219,18 +201,6 @@ public abstract class HXEntity {
 	public void setyVel(double yVel) {
 		this.yVel = yVel;
 	}
-	public int getDraw_xPos() {
-		return draw_xPos;
-	}
-	public void setDraw_xPos(int draw_xPos) {
-		this.draw_xPos = draw_xPos;
-	}
-	public int getDraw_yPos() {
-		return draw_yPos;
-	}
-	public void setDraw_yPos(int draw_yPos) {
-		this.draw_yPos = draw_yPos;
-	}
 	public Image getImg() {
 		return this.img;
 	}
@@ -239,5 +209,25 @@ public abstract class HXEntity {
 	}
 	public void setScale(double s) {
 		this.scale = s;
+	}
+	public void setHovered(Boolean h) {
+		this.hovered = h;
+	}
+	public Boolean getHovered() {
+		return hovered;
+	}
+	
+	// --- Derived Getters ---
+	protected double getDraw_xPos(float interpolation) {
+		return ((xPos - xPos_prev) * interpolation + xPos_prev) * scale;
+	}
+	protected double getDraw_yPos(float interpolation) {
+		return ((yPos - yPos_prev) * interpolation + yPos_prev) * scale;
+	}
+	protected double getDraw_width() {
+		return width * scale;
+	}
+	protected double getDraw_height() {
+		return height * scale;
 	}
 }

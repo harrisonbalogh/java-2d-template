@@ -151,7 +151,9 @@ public class HXWorldPanel extends JPanel implements MouseListener, MouseMotionLi
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
+		world.hoverAt(
+				e.getX() + camera.getCamera_x(), 
+				e.getY() + camera.getCamera_y());
 	}
 
 	@Override

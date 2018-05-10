@@ -4,9 +4,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import world.HXWorld;
+import world.helper.properties.HXHoverable;
 import world.helper.properties.HXInteractable;
 
-public class HXEntityTemplate extends HXEntity implements HXInteractable{
+public class HXEntityTemplate extends HXEntity implements HXInteractable, HXHoverable {
 
 	private final int DEFAULT_WIDTH = 50, DEFAULT_HEIGHT = 50;
 	
@@ -32,11 +33,20 @@ public class HXEntityTemplate extends HXEntity implements HXInteractable{
 		super.draw(g, interpolation);
 		
 		g.setColor(Color.gray);
-		g.drawRect(
-				getDraw_xPos(), 
-				getDraw_yPos(), 
-				(int) (getWidth() * getScale()), 
-				(int) (getHeight() * getScale()));
+		if (getHovered()) {
+			g.fillRect(
+					(int) getDraw_xPos(interpolation), 
+					(int) getDraw_yPos(interpolation), 
+					(int) getDraw_width(), 
+					(int) getDraw_height());
+		} else {
+			g.drawRect(
+					(int) getDraw_xPos(interpolation), 
+					(int) getDraw_yPos(interpolation), 
+					(int) getDraw_width(), 
+					(int) getDraw_height());
+		}
+		
 	}
 
 	@Override
@@ -50,6 +60,14 @@ public class HXEntityTemplate extends HXEntity implements HXInteractable{
 	@Override
 	public void interact() {
 		// TODO Auto-generated method stub
-		
+	}
+
+	@Override
+	public void hovered() {
+		setHovered(true);
+	}
+	@Override
+	public void not_hovered() {
+		setHovered(false);
 	}
 }
