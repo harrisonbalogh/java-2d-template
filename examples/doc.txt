@@ -1,4 +1,6 @@
-# java-2d-template
+		   *Documentation*
+		   Harxer2DTemplate
+		   ================
 
 main.engine.HXStartup
 	-> Where the main method resides
@@ -48,5 +50,3 @@ ui.HXMasterWindow:
 				   Currently contains an array of all entities as well as
 				   the size of the world
 				• Adjustable constants for the world’s x:y dimensions
-
-    

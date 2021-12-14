@@ -1,0 +1,21 @@
+Physics Versions
+================
+
+v1/v2 - First iteration.
+
+v3 - 	Fixed parallel sides error.
+	Fixed minimum translation vector, was incorrect value before.
+
+v4 - 	
+
+
+(Want to add velocity logic, basically predict if the block is going to intersect so colliders never go inside each other. See link below.)
+===============
+https://www.codeproject.com/articles/15573/2d-polygon-collision-detection
+===============
+
+
+(Need to add rotational velocity [google: rotational collision response], so object 'rolls' around other objects. See link)
+===============
+http://stackoverflow.com/questions/11654990/2d-physics-engine-collision-response-rotation-of-objects
+===============
