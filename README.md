@@ -11,6 +11,8 @@ in Java. View some of the projects made from this project below:
 
 ## Structure
 
+![Screen Shot 2021-12-16 at 11 40 20 AM](https://user-images.githubusercontent.com/8960690/146412311-35726132-f610-41e7-bd23-a82d667980c7.png)
+
 ____
 main.engine.HXStartup
 	-> Where the main method resides
